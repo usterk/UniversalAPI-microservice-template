@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.2.3 (2026-01-05)
+
+### Bug Fixes
+
+- Use mem_limit/mem_reservation instead of deploy.resources
+  ([`1863ec2`](https://github.com/usterk/UniversalAPI-microservice-template/commit/1863ec201a6a60d5150f79b17db74117d4faca04))
+
+deploy.resources only works in Docker Swarm mode. Using mem_limit and mem_reservation for standalone
+  docker compose.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+
 ## v0.2.2 (2026-01-05)
 
 ### Bug Fixes
