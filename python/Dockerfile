@@ -4,7 +4,7 @@ FROM python:3.14-alpine3.21 AS builder
 WORKDIR /build
 
 # Install poetry
-RUN pip install --no-cache-dir poetry
+RUN pip install --no-cache-dir poetry==2.0.1
 
 # Copy dependency files
 COPY pyproject.toml poetry.lock* ./
@@ -40,4 +40,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget -q --spider http://127.0.0.1:8000/health || exit 1
 
 # Start with proxy headers support for Traefik
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]
+# Using python -m to avoid shebang issues from copied venv
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]
