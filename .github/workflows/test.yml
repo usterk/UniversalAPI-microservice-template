@@ -4,13 +4,16 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "**.py"
-      - "pyproject.toml"
-      - "poetry.lock"
+      - "python/**.py"
+      - "python/pyproject.toml"
+      - "python/poetry.lock"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
     steps:
       - uses: actions/checkout@v4
 

@@ -11,6 +11,9 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
     steps:
       - uses: actions/checkout@v4
 
@@ -33,6 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        working-directory: python
     outputs:
       released: ${{ steps.semantic.outputs.released }}
       version: ${{ steps.semantic.outputs.version }}
@@ -46,6 +52,7 @@ jobs:
         uses: python-semantic-release/python-semantic-release@v9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: python
 
       - name: Release info
         if: steps.semantic.outputs.released == 'true'
@@ -67,7 +74,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/apps/${{ vars.APP_NAME }}
+            cd /root/apps/${{ vars.APP_NAME }}/python
             git pull origin main
             docker compose build --no-cache
             docker compose up -d
