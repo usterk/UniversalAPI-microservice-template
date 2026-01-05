@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.2.4 (2026-01-05)
+
+### Bug Fixes
+
+- Add CPU limit back
+  ([`76259d9`](https://github.com/usterk/UniversalAPI-microservice-template/commit/76259d92c8a80b7d6360720fd619df389bcd25b3))
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### Chores
+
+- Increase memory reservation to 64M
+  ([`a09c579`](https://github.com/usterk/UniversalAPI-microservice-template/commit/a09c5795f627134ab6be9729728009eadba1b753))
+
+
 ## v0.2.3 (2026-01-05)
 
 ### Bug Fixes
