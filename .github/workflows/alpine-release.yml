@@ -42,6 +42,13 @@ jobs:
             fi
 
             cd /root/apps/universalapi-demo/Alpine.js
+
+            # Create .env if not exists
+            if [ ! -f .env ]; then
+              echo "APP_NAME=universalapi-demo" > .env
+              echo "APP_DOMAIN=universalapi.bieda.it" >> .env
+            fi
+
             docker compose build --no-cache
             docker compose up -d
 
