@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## v0.2.1 (2026-01-05)
+
+### Bug Fixes
+
+- Use in-project virtualenv for correct PATH
+  ([`655cbfc`](https://github.com/usterk/UniversalAPI-microservice-template/commit/655cbfcba023c91476d3138466ac746d00901b4a))
+
+poetry config virtualenvs.in-project true creates .venv in workdir
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+
 ## v0.2.0 (2026-01-05)
 
 ### Features
