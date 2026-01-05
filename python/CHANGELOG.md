@@ -1,6 +1,30 @@
 # CHANGELOG
 
 
+## v0.2.0 (2026-01-05)
+
+### Features
+
+- Add Cloudflare IP detection support
+  ([`5dc69d2`](https://github.com/usterk/UniversalAPI-microservice-template/commit/5dc69d22f8ce60d5e7224116e19fea211c0d20ed))
+
+- Prefer CF-Connecting-IP header for real client IP behind Cloudflare - Add cf_connecting_ip to /ip
+  response - Add test for Cloudflare header priority
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+### Refactoring
+
+- Improve security and Traefik compatibility
+  ([`b5cc9f6`](https://github.com/usterk/UniversalAPI-microservice-template/commit/b5cc9f6a4f49b045894a2ba80d9c6c98588e6b37))
+
+- Implement multi-stage build and non-root user in Dockerfile - Add uvicorn --proxy-headers and
+  --forwarded-allow-ips for Traefik - Support root_path in FastAPI for sub-path routing - Update
+  Pydantic config to V2 syntax (model_config) - Simplify IP retrieval logic and adjust tests
+
+
 ## v0.1.0 (2026-01-05)
 
 ### Bug Fixes
