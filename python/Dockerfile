@@ -1,25 +1,45 @@
-FROM python:3.14-alpine3.21
+# --- Builder Stage ---
+FROM python:3.14-alpine3.21 AS builder
 
-WORKDIR /app
+WORKDIR /build
 
-# Install dependencies
+# Install poetry
 RUN pip install --no-cache-dir poetry
 
 # Copy dependency files
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies (no dev deps, no venv, no project install)
-RUN poetry config virtualenvs.create false && \
+# Install dependencies (no dev deps, no project install)
+# Using a virtualenv in /opt/venv to easily copy it later
+RUN poetry config virtualenvs.in-project false && \
+    poetry config virtualenvs.path /opt/venv && \
     poetry install --only main --no-root --no-interaction --no-ansi
 
-# Copy application
-COPY app ./app
-COPY VERSION ./
+# --- Final Stage ---
+FROM python:3.14-alpine3.21
+
+# Create a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copy virtualenv from builder
+COPY --from=builder /opt/venv /opt/venv
+# Ensure the app uses the virtualenv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy application files (with ownership change)
+COPY --chown=appuser:appgroup app ./app
+COPY --chown=appuser:appgroup VERSION ./
+
+# Switch to non-root user
+USER appuser
 
 EXPOSE 8000
 
-# Health check (use 127.0.0.1 instead of localhost for IPv4)
+# Health check (wget is available in alpine)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget -q --spider http://127.0.0.1:8000/health || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start with proxy headers support for Traefik
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]

@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - ROOT_PATH=${APP_PATH_PREFIX:-/}
     networks:
       - web
     labels:

@@ -7,6 +7,7 @@ app = FastAPI(
     title=settings.app_name,
     description="IP Info API - returns information about client IP and request headers",
     version=VERSION,
+    root_path=settings.root_path,
 )
 
 
@@ -33,10 +34,8 @@ def root():
 @app.get("/ip")
 def get_ip(request: Request):
     """Returns information about client IP address."""
-    client_ip = request.headers.get("X-Forwarded-For", request.client.host)
-
     return {
-        "ip": client_ip.split(",")[0].strip() if client_ip else None,
+        "ip": request.client.host if request.client else None,
         "forwarded_for": request.headers.get("X-Forwarded-For"),
         "real_ip": request.headers.get("X-Real-IP"),
         "host": request.headers.get("Host"),
