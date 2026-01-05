@@ -34,10 +34,20 @@ def root():
 @app.get("/ip")
 def get_ip(request: Request):
     """Returns information about client IP address."""
+    # Priority: CF-Connecting-IP (Cloudflare) > X-Forwarded-For > X-Real-IP > client.host
+    cf_ip = request.headers.get("CF-Connecting-IP")
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    real_ip = request.headers.get("X-Real-IP")
+    client_ip = request.client.host if request.client else None
+
+    # Determine the most reliable IP
+    ip = cf_ip or (forwarded_for.split(",")[0].strip() if forwarded_for else None) or real_ip or client_ip
+
     return {
-        "ip": request.client.host if request.client else None,
-        "forwarded_for": request.headers.get("X-Forwarded-For"),
-        "real_ip": request.headers.get("X-Real-IP"),
+        "ip": ip,
+        "cf_connecting_ip": cf_ip,
+        "forwarded_for": forwarded_for,
+        "real_ip": real_ip,
         "host": request.headers.get("Host"),
         "user_agent": request.headers.get("User-Agent"),
     }
