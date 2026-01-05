@@ -10,6 +10,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Route: Host + optional PathPrefix (e.g., universalapi.bieda.it/example)
+      - "traefik.http.routers.${APP_NAME:-ip-info-api}.entrypoints=web"
       - "traefik.http.routers.${APP_NAME:-ip-info-api}.rule=Host(`${APP_DOMAIN}`) && PathPrefix(`${APP_PATH_PREFIX:-/}`)"
       # Strip prefix so app receives /health not /example/health
       - "traefik.http.routers.${APP_NAME:-ip-info-api}.middlewares=${APP_NAME:-ip-info-api}-stripprefix"
