@@ -1,0 +1,56 @@
+name: Alpine.js Demo - Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Alpine.js/**'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        run: |
+          npm install -g html-validate
+          html-validate "Alpine.js/src/*.html"
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Clone repo if first deployment, otherwise pull
+            if [ ! -d /root/apps/universalapi-demo ]; then
+              mkdir -p /root/apps
+              git clone https://github.com/usterk/UniversalAPI-microservice-template /root/apps/universalapi-demo
+            else
+              cd /root/apps/universalapi-demo
+              git pull origin main
+            fi
+
+            cd /root/apps/universalapi-demo/Alpine.js
+            docker compose build --no-cache
+            docker compose up -d
+
+      - name: Wait for startup
+        run: sleep 10
+
+      - name: Health check
+        run: |
+          response=$(curl -sf https://universalapi.bieda.it/)
+          echo "$response" | head -20
+          echo "$response" | grep -q "Universal API Demo" || exit 1
+          echo "Health check passed!"

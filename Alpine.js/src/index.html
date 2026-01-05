@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal API Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <main class="container" x-data="apiDemo()">
+        <h1>Universal API Demo</h1>
+        <p>Demo mikroserwisow z IP Info API</p>
+
+        <!-- IP Info Card -->
+        <article>
+            <header>Twoje IP</header>
+            <div x-show="loading" aria-busy="true">Ladowanie...</div>
+            <div x-show="!loading" x-transition>
+                <p><strong x-text="ipData.ip"></strong></p>
+                <small x-text="'Cloudflare: ' + (ipData.cf_connecting_ip || 'N/A')"></small>
+            </div>
+            <footer>
+                <button @click="fetchIpInfo()" :disabled="loading">Odswiez</button>
+            </footer>
+        </article>
+
+        <!-- Headers Card -->
+        <article>
+            <header>Request Headers</header>
+            <div x-show="!headersData" aria-busy="true">Ladowanie...</div>
+            <template x-for="(value, key) in headersData" :key="key">
+                <div x-transition>
+                    <code x-text="key"></code>: <span x-text="value"></span>
+                </div>
+            </template>
+            <footer>
+                <button @click="fetchHeaders()">Odswiez</button>
+            </footer>
+        </article>
+
+        <!-- API Endpoints Info -->
+        <article>
+            <header>Dostepne API</header>
+            <ul>
+                <li><a href="/example/health">/example/health</a> - Health check</li>
+                <li><a href="/example/ip">/example/ip</a> - IP Info</li>
+                <li><a href="/example/headers">/example/headers</a> - Headers</li>
+            </ul>
+        </article>
+    </main>
+
+    <script>
+    function apiDemo() {
+        return {
+            loading: true,
+            ipData: {},
+            headersData: null,
+
+            async init() {
+                await this.fetchIpInfo();
+                await this.fetchHeaders();
+            },
+
+            async fetchIpInfo() {
+                this.loading = true;
+                const res = await fetch('/example/ip');
+                this.ipData = await res.json();
+                this.loading = false;
+            },
+
+            async fetchHeaders() {
+                const res = await fetch('/example/headers');
+                this.headersData = await res.json();
+            }
+        }
+    }
+    </script>
+</body>
+</html>

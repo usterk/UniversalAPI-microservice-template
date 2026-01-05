@@ -4,9 +4,10 @@ Universal API microservice templates for various languages with CI/CD, semantic 
 
 ## Available Templates
 
-| Language | Status | Description |
+| Template | Status | Description |
 |----------|--------|-------------|
-| [Python (FastAPI)](./python/) | Ready | IP Info API example with FastAPI |
+| [Python (FastAPI)](./python/) | Ready | IP Info API backend with FastAPI |
+| [Alpine.js](./Alpine.js/) | Ready | Lightweight frontend demo (~25KB total) |
 | Go | Coming soon | - |
 | Node.js | Coming soon | - |
 
