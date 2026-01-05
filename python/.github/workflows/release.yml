@@ -6,6 +6,7 @@ on:
 
 env:
   APP_NAME: ${{ vars.APP_NAME }}
+  APP_PATH_PREFIX: ${{ vars.APP_PATH_PREFIX }}
 
 jobs:
   test:
@@ -77,8 +78,9 @@ jobs:
 
       - name: Health check
         run: |
-          echo "Checking health of https://${{ vars.APP_DOMAIN }}/health"
-          response=$(curl -sf https://${{ vars.APP_DOMAIN }}/health)
+          HEALTH_URL="https://${{ vars.APP_DOMAIN }}${{ vars.APP_PATH_PREFIX }}/health"
+          echo "Checking health of $HEALTH_URL"
+          response=$(curl -sf "$HEALTH_URL")
           echo "Response: $response"
           echo "$response" | grep -q '"status":"healthy"' || exit 1
           echo "Health check passed!"

@@ -52,6 +52,8 @@ docker compose -f docker-compose.dev.yml up --build
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `APP_NAME` | `ip-info-api` | Application name |
+| `APP_DOMAIN` | - | Domain (e.g., `universalapi.bieda.it`) |
+| `APP_PATH_PREFIX` | `/` | URL path prefix (e.g., `/example`) |
 | `DEBUG` | `false` | Debug mode |
 
 ### GitHub Secrets
@@ -65,10 +67,15 @@ docker compose -f docker-compose.dev.yml up --build
 
 ### GitHub Variables
 
-| Variable | Description |
-|----------|-------------|
-| `APP_NAME` | Application name (used in deployment) |
-| `APP_DOMAIN` | Domain for health check |
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `APP_NAME` | Application name (used in deployment) | `ip-info-api` |
+| `APP_DOMAIN` | Domain for routing | `universalapi.bieda.it` |
+| `APP_PATH_PREFIX` | URL path prefix | `/example` |
+
+With `APP_DOMAIN=universalapi.bieda.it` and `APP_PATH_PREFIX=/example`:
+- `https://universalapi.bieda.it/example/health`
+- `https://universalapi.bieda.it/example/ip`
 
 ## Project Structure
 

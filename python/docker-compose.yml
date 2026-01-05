@@ -9,7 +9,11 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${APP_NAME:-ip-info-api}.rule=Host(`${APP_DOMAIN}`)"
+      # Route: Host + optional PathPrefix (e.g., universalapi.bieda.it/example)
+      - "traefik.http.routers.${APP_NAME:-ip-info-api}.rule=Host(`${APP_DOMAIN}`) && PathPrefix(`${APP_PATH_PREFIX:-/}`)"
+      # Strip prefix so app receives /health not /example/health
+      - "traefik.http.routers.${APP_NAME:-ip-info-api}.middlewares=${APP_NAME:-ip-info-api}-stripprefix"
+      - "traefik.http.middlewares.${APP_NAME:-ip-info-api}-stripprefix.stripprefix.prefixes=${APP_PATH_PREFIX:-/}"
       - "traefik.http.services.${APP_NAME:-ip-info-api}.loadbalancer.server.port=8000"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8000/health"]
