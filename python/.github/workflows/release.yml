@@ -1,0 +1,84 @@
+name: Release & Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  APP_NAME: ${{ vars.APP_NAME }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run pytest -v
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      released: ${{ steps.semantic.outputs.released }}
+      version: ${{ steps.semantic.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python Semantic Release
+        id: semantic
+        uses: python-semantic-release/python-semantic-release@v9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release info
+        if: steps.semantic.outputs.released == 'true'
+        run: |
+          echo "Released version: ${{ steps.semantic.outputs.version }}"
+
+  deploy:
+    needs: release
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /root/apps/${{ vars.APP_NAME }}
+            git pull origin main
+            docker compose build --no-cache
+            docker compose up -d
+            echo "Deployed ${{ vars.APP_NAME }} version ${{ needs.release.outputs.version }}"
+
+      - name: Wait for startup
+        run: sleep 15
+
+      - name: Health check
+        run: |
+          echo "Checking health of https://${{ vars.APP_DOMAIN }}/health"
+          response=$(curl -sf https://${{ vars.APP_DOMAIN }}/health)
+          echo "Response: $response"
+          echo "$response" | grep -q '"status":"healthy"' || exit 1
+          echo "Health check passed!"

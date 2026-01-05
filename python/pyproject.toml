@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "ip-info-api"
+version = "0.1.0"
+description = "IP Info API - returns information about client IP and request headers"
+authors = ["usterk"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.14"
+fastapi = "^0.115.0"
+uvicorn = {extras = ["standard"], version = "^0.34.0"}
+pydantic-settings = "^2.7.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+httpx = "^0.28.0"
+ruff = "^0.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:tool.poetry.version"]
+version_variables = ["VERSION"]
+branch = "main"
+upload_to_pypi = false
+upload_to_release = true
+build_command = false
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore"]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

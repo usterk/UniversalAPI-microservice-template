@@ -1,0 +1,17 @@
+# Development docker-compose - run without Traefik
+services:
+  app:
+    build: .
+    container_name: ${APP_NAME:-ip-info-api}-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=${APP_NAME:-ip-info-api}
+      - DEBUG=true
+    volumes:
+      - ./app:/app/app:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
