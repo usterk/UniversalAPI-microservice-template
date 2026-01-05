@@ -26,7 +26,7 @@ version_variables = ["VERSION"]
 branch = "main"
 upload_to_pypi = false
 upload_to_release = true
-build_command = false
+build_command = ""
 
 [tool.semantic_release.commit_parser_options]
 allowed_tags = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore"]
