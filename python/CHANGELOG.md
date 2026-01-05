@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## v0.2.2 (2026-01-05)
+
+### Bug Fixes
+
+- Use python -m uvicorn to avoid shebang path issues
+  ([`659feda`](https://github.com/usterk/UniversalAPI-microservice-template/commit/659fedad0f91ff1cef42d977698d183bf461242d))
+
+Venv scripts have hardcoded builder path in shebang
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+
 ## v0.2.1 (2026-01-05)
 
 ### Bug Fixes
