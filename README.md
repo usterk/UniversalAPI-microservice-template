@@ -1,24 +1,26 @@
 # UniversalAPI Microservice Template
 
-Universal API microservice templates for various languages with CI/CD, semantic versioning, and Traefik integration.
+Universal API microservice templates with CI/CD, semantic versioning, and Traefik integration.
+
+**Live Demo**: https://universalapi.bieda.it/
 
 ## Available Templates
 
-| Template | Status | Description |
-|----------|--------|-------------|
-| [Python (FastAPI)](./python/) | Ready | IP Info API backend with FastAPI |
-| [Alpine.js](./Alpine.js/) | Ready | Lightweight frontend demo (~25KB total) |
-| Go | Coming soon | - |
-| Node.js | Coming soon | - |
+| Template | Status | RAM | Description |
+|----------|--------|-----|-------------|
+| [Python (FastAPI)](./python/) | Ready | ~44MB | IP Info API backend |
+| [Alpine.js](./Alpine.js/) | Ready | ~3MB | Lightweight frontend demo |
+| Go | Coming soon | - | - |
+| Node.js | Coming soon | - | - |
 
 ## Features
 
-- Semantic versioning (automatic version bumps based on commits)
-- GitHub Actions CI/CD pipeline
-- Docker + Traefik integration
-- Health endpoint with version info
-- Unit and E2E tests
-- Environment-based configuration
+- Isolated CI/CD workflows per template (path-filtered)
+- Semantic versioning for Python (automatic version bumps)
+- Auto-deployment on push (clones repo on first deploy)
+- Docker + Traefik integration with resource limits
+- Cloudflare IP detection support
+- Health endpoints with version info
 
 ## Quick Start
 

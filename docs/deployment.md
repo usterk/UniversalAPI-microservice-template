@@ -89,12 +89,20 @@ networks:
 
 ## CI/CD Pipeline
 
-On every push to `main`:
+Each template has its own isolated workflow with path filtering:
 
-1. **Test** - Run pytest
-2. **Release** - Bump version if feat/fix commits
+### Python (`python/**`)
+On push to `python/` directory:
+1. **Test** - Run pytest + ruff
+2. **Release** - Bump version if feat/fix commits (semantic-release)
 3. **Deploy** - Pull, build, restart on server
 4. **Health Check** - Verify `/health` endpoint
+
+### Alpine.js (`Alpine.js/**`)
+On push to `Alpine.js/` directory:
+1. **Validate** - HTML validation
+2. **Deploy** - Pull, build, restart on server (creates .env on first deploy)
+3. **Health Check** - Verify page content
 
 ## Rollback
 
