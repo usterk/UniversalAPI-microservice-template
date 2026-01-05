@@ -9,14 +9,8 @@ services:
       - ROOT_PATH=${APP_PATH_PREFIX:-/}
     networks:
       - web
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 256M
-        reservations:
-          cpus: '0.01'
-          memory: 16M
+    mem_limit: 256m
+    mem_reservation: 64m
     labels:
       - "traefik.enable=true"
       # Route: Host + optional PathPrefix (e.g., universalapi.bieda.it/example)
