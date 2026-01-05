@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.3.0 (2026-01-05)
+
+### Features
+
+- Add Alpine.js frontend demo example
+  ([`2d7cb4d`](https://github.com/usterk/UniversalAPI-microservice-template/commit/2d7cb4d61fd004d2579bc53bf26a76f53882d77a))
+
+- Add Alpine.js/ directory with lightweight frontend demo - Uses Alpine.js (~15KB) + Pico CSS
+  (~10KB) + nginx:alpine - Displays IP info and headers from /example/* API - Add isolated GitHub
+  Actions workflow (alpine-release.yml) - Update Python workflow with path filter (python/**) - Add
+  CLAUDE.md documentation
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+
 ## v0.2.4 (2026-01-05)
 
 ### Bug Fixes

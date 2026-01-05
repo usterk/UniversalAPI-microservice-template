@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ip-info-api"
-version = "0.2.1"
+version = "0.3.0"
 description = "IP Info API - returns information about client IP and request headers"
 authors = ["usterk"]
 readme = "README.md"
