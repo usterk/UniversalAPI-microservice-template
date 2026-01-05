@@ -21,7 +21,7 @@
                 <small x-text="'Cloudflare: ' + (ipData.cf_connecting_ip || 'N/A')"></small>
             </div>
             <footer>
-                <button @click="fetchIpInfo()" :disabled="loading">Odswiez</button>
+                <button type="button" @click="fetchIpInfo()" :disabled="loading">Odswiez</button>
             </footer>
         </article>
 
@@ -35,7 +35,7 @@
                 </div>
             </template>
             <footer>
-                <button @click="fetchHeaders()">Odswiez</button>
+                <button type="button" @click="fetchHeaders()">Odswiez</button>
             </footer>
         </article>
 
