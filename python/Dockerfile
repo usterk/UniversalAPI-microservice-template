@@ -9,10 +9,8 @@ RUN pip install --no-cache-dir poetry
 # Copy dependency files
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies (no dev deps, no project install)
-# Using a virtualenv in /opt/venv to easily copy it later
-RUN poetry config virtualenvs.in-project false && \
-    poetry config virtualenvs.path /opt/venv && \
+# Install dependencies into .venv in current directory
+RUN poetry config virtualenvs.in-project true && \
     poetry install --only main --no-root --no-interaction --no-ansi
 
 # --- Final Stage ---
@@ -23,10 +21,10 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 WORKDIR /app
 
-# Copy virtualenv from builder
-COPY --from=builder /opt/venv /opt/venv
+# Copy virtualenv from builder (it's in /build/.venv)
+COPY --from=builder /build/.venv /app/.venv
 # Ensure the app uses the virtualenv
-ENV PATH="/opt/venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy application files (with ownership change)
 COPY --chown=appuser:appgroup app ./app
